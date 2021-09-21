@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<StGermainData xmlns="http://www.vpac.org/StGermain/XML_IO_Handler/Jun2003">
+
+  <!-- This file is used to make a mesh with variable cell size -->
+  
+  <!-- It is very user friendly and will help you getting started by telling you what to change when the model crashes -->
+  
+  <struct name="components" mergeType="merge">
+  
+	 <!-- Disable the regular mesh generator -->
+	 <struct name="linearMeshGenerator" mergeType="merge">
+		<param name="regular"> False </param>
+	 </struct>
+
+	 <!-- Mesh particle layout. -->
+	 <struct name="materialSwarmParticleLayout" mergeType="replace">
+		<param name="Type">MeshParticleLayout</param>
+		<param name="mesh">linearMesh</param>
+		<param name="cellParticleCount">particlesPerCell</param>
+	 </struct>
+
+	 <!-- Create the adaptor -->
+	 <struct name="meshDefo">
+		<param name="Type">NodeBunching</param>
+		<param name="sourceGenerator">linearMeshGenerator</param>
+		<param name="mesh">linearMesh</param>
+		<param name="IncreaseElementFactor">1.2</param>
+	
+		<!-- The way this structure works is by gradually changing the cell size. -->
+		
+		<!-- In the case of the vertical axis: -->
+		<!-- 	From 340 to 830 km, the cell is 8 km thick -->
+		<!-- 	from 830 to 880 km, the cell thickness is linearly reduced from 8 to 2 km -->
+		<!-- 	from 880 km to 1020 km, the cell thickness is 2 km. -->
+		
+		<list name="PointsY">
+		  <asciidata>
+			 <columnDefinition name = "Point" type="double" units="km"/>
+			 <columnDefinition name = "ElementSize" type="double" units="km"/>
+			 		340 8
+			 		830	8
+			 		880	2.0
+			 		1020	2.0
+
+		  </asciidata>
+		</list>
+		<list name="PointsX">
+		  <asciidata>
+			 <columnDefinition name = "Point" type="double" units="km"/>
+			 <columnDefinition name = "ElementSize" type="double" units="km"/>
+			 		-700 5.0
+			 		4300 5.0
+		  </asciidata>
+		</list>		
+
+	 </struct>
+  </struct>
+
+</StGermainData>
